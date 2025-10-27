@@ -12,7 +12,7 @@ namespace BookRoom.Logics
             _bookings = bookings;
         }
 
-        public int CheckAvailability(string hotelId, string roomTypeCode, DateTime date)
+        public int CheckAvailability(string hotelId, string roomTypeCode, DateTime date, DateTime? departureDate = null)
         {
             if (string.IsNullOrWhiteSpace(hotelId)) throw new ArgumentNullException("Hotel Id is not correct.");
             if (string.IsNullOrWhiteSpace(roomTypeCode)) throw new ArgumentNullException("Room type is not correct.");
@@ -22,6 +22,8 @@ namespace BookRoom.Logics
             int hotelWholeAvailability = _hotels[hotelId].Rooms.Count(x => x.RoomType == roomTypeCode);
 
             if (!_bookings.ContainsKey(hotelId)) return hotelWholeAvailability;
+
+
 
             int bookedRooms = _bookings[hotelId].Count(x => x.RoomType == roomTypeCode && x.Arrival <= date && x.Departure > date);
 

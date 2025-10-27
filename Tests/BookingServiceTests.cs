@@ -75,5 +75,20 @@ namespace BookRoom.Tests
             var result = _bookingService.CheckAvailability(hotelId, RoomTypeCode, date);
             Assert.That(result, Is.EqualTo(roomsAmount));
         }
+
+        [Test]
+        [TestCase(ExistingHotelId, ExistingRoomType, "2024-09-01", "2024-09-03", 1)]
+        [TestCase(ExistingHotelId, ExistingRoomType, "2024-09-02", "2024-09-03", 1)]
+        [TestCase(ExistingHotelId, ExistingRoomType, "2024-09-03", "2024-09-05", 1)]
+        [TestCase(ExistingHotelId, ExistingRoomType, "2024-09-04", "2024-09-05", 1)]
+        [TestCase(ExistingHotelId, ExistingRoomType, "2024-09-04", "2024-09-06", 1)]
+        [TestCase(ExistingHotelId, ExistingRoomType, "2024-09-05", "2024-09-10", 2)]
+        [TestCase(ExistingHotelId, ExistingRoomType, "2024-09-06", "2024-09-07", 2)]
+        [TestCase(ExistingHotelId, ExistingRoomType, "2024-10-01", "2024-11-01", 2)]
+        public async Task CheckAvailability_ArrivalDepartureDates_ReturnsAvailableRoomsAmount(string hotelId, string RoomTypeCode, DateTime arrival, DateTime departure, int roomsAmount)
+        {
+            var result = _bookingService.CheckAvailability(hotelId, RoomTypeCode, arrival, departure);
+            Assert.That(result, Is.EqualTo(roomsAmount));
+        }
     }
 }
