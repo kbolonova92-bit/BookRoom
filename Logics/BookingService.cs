@@ -23,7 +23,7 @@ namespace BookRoom.Logics
 
             if (!_bookings.ContainsKey(hotelId)) return hotelWholeAvailability;
 
-            int bookedRooms = _bookings[hotelId].Count(x => x.RoomType == roomTypeCode && x.Arrival >= date && x.Departure < date);
+            int bookedRooms = _bookings[hotelId].Count(x => x.RoomType == roomTypeCode && x.Arrival <= date && x.Departure > date);
 
             return hotelWholeAvailability - bookedRooms;
         }

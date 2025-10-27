@@ -9,13 +9,16 @@ namespace BookRoom.Tests
     public class BookingServiceTests
     {
         private BookingService _bookingService;
-        private const string SomeDate = "2025-09-02";
+        private const string SomeDate = "2025-01-01";
         private const string ExistingHotelId = "H1";
         private const string NotExistingHotelId = "Bla-bla";
         private const string ExistingRoomType = "SGL";
         private const string NotExistingRoomType = "Bla-Bla";
         private const string SingleRoomHotelId = "J1";
         private const string SingleRoomHotelRoomType = "Vip";
+
+        private const string СrowdedHotelId = "F1";
+        private const string CrowdedRoomType = "Some";
 
 
         [SetUp]
@@ -62,11 +65,11 @@ namespace BookRoom.Tests
 
         [Test]
         [TestCase(SingleRoomHotelId, "2024-01-01", SingleRoomHotelRoomType,1)]
-        [TestCase(ExistingHotelId, "2024-09-02", ExistingRoomType, 2)]
-        [TestCase(ExistingHotelId, SomeDate, ExistingRoomType, 1)]
+        [TestCase(ExistingHotelId, "2024-09-02", ExistingRoomType, 1)]
         [TestCase(ExistingHotelId, "2024-09-03", ExistingRoomType, 1)]
         [TestCase(ExistingHotelId, "2024-09-05", ExistingRoomType, 2)]
         [TestCase(ExistingHotelId, "2024-09-10", ExistingRoomType, 2)]
+        [TestCase(СrowdedHotelId, "2024-09-02", CrowdedRoomType, -1)]
         public async Task CheckAvailability_SingleDate_ReturnsAvailableRoomsAmount(string hotelId, DateTime date, string RoomTypeCode, int roomsAmount)
         {
             var result = _bookingService.CheckAvailability(hotelId, date, RoomTypeCode);
