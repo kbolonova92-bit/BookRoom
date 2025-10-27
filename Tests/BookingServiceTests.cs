@@ -10,6 +10,7 @@ namespace BookRoom.Tests
     {
         private BookingService _bookingService;
 
+        [SetUp]
         public void Setup()
         {
             _bookingService = new BookingService(
@@ -19,11 +20,15 @@ namespace BookRoom.Tests
         }
 
         [Test]
-        [TestCase(null, null, null)]
-        public async Task CheckAvailability_EmptyData_ReturnsError(string hotelId, DateTime date, string RoomTypeCode)
+        [TestCase(null, null)]
+        [TestCase("", "")]
+        [TestCase("qw", null)]
+        [TestCase("qw", "")]
+        [TestCase(null, "qw")]
+        [TestCase("", "qw")]
+        public async Task CheckAvailability_EmptyData_ThrowsException(string hotelId, string RoomTypeCode)
         {
-            _bookingService.CheckAvailability(hotelId, date, RoomTypeCode);
-            Assert.Fail();
+            Assert.Throws<ArgumentNullException>(() => { _bookingService.CheckAvailability(hotelId, DateTime.Now, RoomTypeCode); });
         }
 
 

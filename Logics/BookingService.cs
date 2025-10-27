@@ -12,8 +12,13 @@ namespace BookRoom.Logics
             _bookings = bookings;
         }
 
-        public string CheckAvailability(string hotelId, DateTime date, string RoomTypeCode)
+        public string CheckAvailability(string hotelId, DateTime date, string roomTypeCode)
         {
+            if (string.IsNullOrWhiteSpace(hotelId)) throw new ArgumentNullException();
+            if (string.IsNullOrWhiteSpace(roomTypeCode)) throw new ArgumentNullException();
+
+            
+
             return null;
         }
 
