@@ -20,7 +20,7 @@ namespace BookRoom.Tests
 
         [Test]
         [TestCase(null, null, null)]
-        public void CheckAvailability_EmptyData_ReturnsError(string hotelId, DateTime date, string RoomTypeCode)
+        public async Task CheckAvailability_EmptyData_ReturnsError(string hotelId, DateTime date, string RoomTypeCode)
         {
             _bookingService.CheckAvailability(hotelId, date, RoomTypeCode);
             Assert.Fail();
@@ -32,7 +32,7 @@ namespace BookRoom.Tests
         ///
 
         [Test]
-        public void CheckAvailability_SingleDate_ReturnsError()
+        public async Task CheckAvailability_SingleDate_ReturnsError()
         {
             Assert.Fail();
         }
