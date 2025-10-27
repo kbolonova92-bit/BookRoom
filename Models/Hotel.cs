@@ -18,7 +18,8 @@ namespace BookRoom.Models
 
         public bool RoomTypeExists(string roomTypeCode)
         {
-            return false;
+
+            return RoomTypes.Count(x => x.Code == roomTypeCode) > 0;
         }
     }
 }

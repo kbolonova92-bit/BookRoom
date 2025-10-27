@@ -5,8 +5,8 @@ namespace BookRoom.Logics
     public class BookingService
     {
         private Dictionary<string,Hotel> _hotels;
-        private List<Booking> _bookings;
-        public BookingService(Dictionary<string, Hotel> hotels, List<Booking> bookings) 
+        private Dictionary<string, List<Booking>> _bookings;
+        public BookingService(Dictionary<string, Hotel> hotels, Dictionary<string, List<Booking>> bookings) 
         {
             _hotels = hotels;
             _bookings = bookings;
@@ -19,9 +19,13 @@ namespace BookRoom.Logics
             if (!_hotels.ContainsKey(hotelId)) throw new KeyNotFoundException($"Hotel with Id {hotelId} is missing.");
             if (!_hotels[hotelId].RoomTypeExists(roomTypeCode)) throw new KeyNotFoundException($"Room Type with {roomTypeCode} is missing in Hotel {hotelId}.");
 
+            int hotelWholeAvailability = _hotels[hotelId].Rooms.Count(x => x.RoomType == roomTypeCode);
 
+            if (!_bookings.ContainsKey(hotelId)) return hotelWholeAvailability;
 
-            return default;
+            int bookedRooms = _bookings[hotelId].Count(x => x.RoomType == roomTypeCode && x.Arrival >= date && x.Departure < date);
+
+            return hotelWholeAvailability - bookedRooms;
         }
 
         public string Search()

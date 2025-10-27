@@ -105,7 +105,34 @@
 
         ] 
 
-    } 
+    },
+    {
+        ""id"": ""J1"",
+        ""name"": ""Hotel Jumanji"",
+        ""roomTypes"": [
+{ 
+
+                ""code"": ""Vip"", 
+
+                ""description"": ""Vip Room"", 
+
+                ""amenities"": [""WiFi"", ""TV""], 
+
+                ""features"": [""Non-smoking""] 
+
+            }
+        ],
+        ""rooms"": [
+{ 
+
+                ""roomType"": ""Vip"", 
+
+                ""roomId"": ""007"" 
+
+            }
+]
+
+    }
 
 ] ";
     }

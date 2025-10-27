@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using BookRoom.Common;
+using System.Text.Json.Serialization;
 
 namespace BookRoom.Models
 {
@@ -8,14 +9,13 @@ namespace BookRoom.Models
         public string HotelId { get; set; }
 
         [JsonPropertyName("arrival")]
-        public string Arrival { get; set; }
-
-        public DateTime ArrivalDate { get; private set; }
+        [JsonConverter(typeof(DateOnlyConverterYYYYMMDD))]
+        public DateTime Arrival { get; set; }
 
         [JsonPropertyName("departure")]
-        public string Departure { get; set; }
 
-        public DateTime DepartureDate { get; private set; }
+        [JsonConverter(typeof(DateOnlyConverterYYYYMMDD))]
+        public DateTime Departure { get; set; }
 
         [JsonPropertyName("roomType")]
         public string RoomType { get; set; }

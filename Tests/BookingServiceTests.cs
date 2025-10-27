@@ -14,17 +14,22 @@ namespace BookRoom.Tests
         private const string NotExistingHotelId = "Bla-bla";
         private const string ExistingRoomType = "SGL";
         private const string NotExistingRoomType = "Bla-Bla";
-        
+        private const string SingleRoomHotelId = "J1";
+        private const string SingleRoomHotelRoomType = "Vip";
+
 
         [SetUp]
         public void Setup()
         {
             var hotelHash = JsonSerializer.Deserialize<List<Hotel>>(BookingServiceTestData.Hotels)
                 .ToDictionary(x => x.Id);
+            var bookingHash = JsonSerializer.Deserialize<List<Booking>>(BookingServiceTestData.Bookings).GroupBy(x => x.HotelId)
+                .ToDictionary(x => x.Key,
+                              x => x.ToList());
 
             _bookingService = new BookingService(
                 hotelHash,
-                JsonSerializer.Deserialize<List<Booking>>(BookingServiceTestData.Bookings)
+                bookingHash
                 );
         }
 
@@ -56,7 +61,12 @@ namespace BookRoom.Tests
         ///
 
         [Test]
+        [TestCase(SingleRoomHotelId, "2024-01-01", SingleRoomHotelRoomType,1)]
+        [TestCase(ExistingHotelId, "2024-09-02", ExistingRoomType, 2)]
         [TestCase(ExistingHotelId, SomeDate, ExistingRoomType, 1)]
+        [TestCase(ExistingHotelId, "2024-09-03", ExistingRoomType, 1)]
+        [TestCase(ExistingHotelId, "2024-09-05", ExistingRoomType, 2)]
+        [TestCase(ExistingHotelId, "2024-09-10", ExistingRoomType, 2)]
         public async Task CheckAvailability_SingleDate_ReturnsAvailableRoomsAmount(string hotelId, DateTime date, string RoomTypeCode, int roomsAmount)
         {
             var result = _bookingService.CheckAvailability(hotelId, date, RoomTypeCode);
