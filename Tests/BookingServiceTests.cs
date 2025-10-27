@@ -9,7 +9,7 @@ namespace BookRoom.Tests
     public class BookingServiceTests
     {
         private BookingService _bookingService;
-        private const string SomeDate = "2025-01-01";
+        private const string SomeDate = "2025-09-02";
         private const string ExistingHotelId = "H1";
         private const string NotExistingHotelId = "Bla-bla";
         private const string ExistingRoomType = "SGL";
@@ -44,6 +44,7 @@ namespace BookRoom.Tests
 
         [Test]
         [TestCase(NotExistingHotelId, SomeDate, ExistingRoomType)]
+        [TestCase(ExistingHotelId, SomeDate, NotExistingRoomType)]
         public async Task CheckAvailability_DataIsMissing_ThrowsKeyNotFoundException(string hotelId, DateTime date, string RoomTypeCode)
         {
             Assert.Throws<KeyNotFoundException>(() => { _bookingService.CheckAvailability(hotelId, date, RoomTypeCode); });
@@ -55,9 +56,11 @@ namespace BookRoom.Tests
         ///
 
         [Test]
-        public async Task CheckAvailability_SingleDate_ReturnsError()
+        [TestCase(ExistingHotelId, SomeDate, ExistingRoomType, 1)]
+        public async Task CheckAvailability_SingleDate_ReturnsAvailableRoomsAmount(string hotelId, DateTime date, string RoomTypeCode, int roomsAmount)
         {
-            Assert.Fail();
+            var result = _bookingService.CheckAvailability(hotelId, date, RoomTypeCode);
+            Assert.That(result, Is.EqualTo(roomsAmount));
         }
     }
 }

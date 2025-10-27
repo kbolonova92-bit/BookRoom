@@ -15,5 +15,10 @@ namespace BookRoom.Models
 
         [JsonPropertyName("rooms")]
         public List<Room> Rooms { get; set; }
+
+        public bool RoomTypeExists(string roomTypeCode)
+        {
+            return false;
+        }
     }
 }
