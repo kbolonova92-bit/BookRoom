@@ -47,7 +47,7 @@ namespace BookRoom.Tests
         [TestCase(" ", NotExistingRoomType)]
         public async Task CheckAvailability_EmptyData_ThrowsException(string hotelId, string RoomTypeCode)
         {
-            Assert.Throws<ArgumentNullException>(() => { _bookingService.CheckAvailability(hotelId, DateTime.Now, RoomTypeCode); });
+            Assert.Throws<ArgumentNullException>(() => { _bookingService.CheckAvailability(hotelId, RoomTypeCode, DateTime.Now); });
         }
 
         [Test]
@@ -55,7 +55,7 @@ namespace BookRoom.Tests
         [TestCase(ExistingHotelId, SomeDate, NotExistingRoomType)]
         public async Task CheckAvailability_DataIsMissing_ThrowsKeyNotFoundException(string hotelId, DateTime date, string RoomTypeCode)
         {
-            Assert.Throws<KeyNotFoundException>(() => { _bookingService.CheckAvailability(hotelId, date, RoomTypeCode); });
+            Assert.Throws<KeyNotFoundException>(() => { _bookingService.CheckAvailability(hotelId, RoomTypeCode, date); });
         }
 
 
@@ -72,7 +72,7 @@ namespace BookRoom.Tests
         [TestCase(СrowdedHotelId, "2024-09-02", CrowdedRoomType, -1)]
         public async Task CheckAvailability_SingleDate_ReturnsAvailableRoomsAmount(string hotelId, DateTime date, string RoomTypeCode, int roomsAmount)
         {
-            var result = _bookingService.CheckAvailability(hotelId, date, RoomTypeCode);
+            var result = _bookingService.CheckAvailability(hotelId, RoomTypeCode, date);
             Assert.That(result, Is.EqualTo(roomsAmount));
         }
     }
