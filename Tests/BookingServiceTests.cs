@@ -19,8 +19,11 @@ namespace BookRoom.Tests
         [SetUp]
         public void Setup()
         {
+            var hotelHash = JsonSerializer.Deserialize<List<Hotel>>(BookingServiceTestData.Hotels)
+                .ToDictionary(x => x.Id);
+
             _bookingService = new BookingService(
-                JsonSerializer.Deserialize<List<Hotel>>(BookingServiceTestData.Hotels),
+                hotelHash,
                 JsonSerializer.Deserialize<List<Booking>>(BookingServiceTestData.Bookings)
                 );
         }
@@ -40,7 +43,7 @@ namespace BookRoom.Tests
         }
 
         [Test]
-        [TestCase(NotExistingHotelId, SomeDate, NotExistingRoomType)]
+        [TestCase(NotExistingHotelId, SomeDate, ExistingRoomType)]
         public async Task CheckAvailability_DataIsMissing_ThrowsKeyNotFoundException(string hotelId, DateTime date, string RoomTypeCode)
         {
             Assert.Throws<KeyNotFoundException>(() => { _bookingService.CheckAvailability(hotelId, date, RoomTypeCode); });
