@@ -10,8 +10,12 @@ namespace BookRoom.Models
         [JsonPropertyName("arrival")]
         public string Arrival { get; set; }
 
+        public DateTime ArrivalDate { get; private set; }
+
         [JsonPropertyName("departure")]
         public string Departure { get; set; }
+
+        public DateTime DepartureDate { get; private set; }
 
         [JsonPropertyName("roomType")]
         public string RoomType { get; set; }

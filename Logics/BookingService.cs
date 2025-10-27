@@ -12,7 +12,7 @@ namespace BookRoom.Logics
             _bookings = bookings;
         }
 
-        public string Availability()
+        public string CheckAvailability(string hotelId, DateTime date, string RoomTypeCode)
         {
             return null;
         }
