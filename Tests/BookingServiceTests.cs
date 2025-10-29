@@ -118,9 +118,13 @@ namespace BookRoom.Tests
         }
 
         [Test]
-        public async Task Search_RightData_ShouldReturnAvailabilitySlot()
+        [TestCase(ExistingHotelId, 1, ExistingRoomType, 1)]
+        [TestCase(ExistingHotelId, 2, ExistingRoomType, 2)]
+        [TestCase(ExistingHotelId, 5, ExistingRoomType, 3)]
+        public async Task Search_RightData_ShouldReturnAvailabilitySlot(string hotelId, int daysAhead, string roomTypeCode, int elementAmount)
         {
-            Assert.Fail();
+            List<AvailabilitySlot> result = _bookingService.Search(fakeToday, hotelId, daysAhead, roomTypeCode);
+            Assert.That(result.Count, Is.EqualTo(elementAmount));
         }
     }
 }
