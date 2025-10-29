@@ -12,7 +12,7 @@ namespace BookRoom.Logics
             _bookings = bookings;
         }
 
-        public int CheckAvailability(string hotelId, string roomTypeCode, DateTime date, DateTime? departureDate = null)
+        public int CheckAvailability(string hotelId, string roomTypeCode, DateTime arrival, DateTime? departure = null)
         {
             if (string.IsNullOrWhiteSpace(hotelId)) throw new ArgumentNullException("Hotel Id is not correct.");
             if (string.IsNullOrWhiteSpace(roomTypeCode)) throw new ArgumentNullException("Room type is not correct.");
@@ -23,9 +23,28 @@ namespace BookRoom.Logics
 
             if (!_bookings.ContainsKey(hotelId)) return hotelWholeAvailability;
 
+            int bookedRooms = default;
 
+            if (departure.HasValue && arrival > departure)
+            {
+                var arrivalCopy = arrival;
+                arrival = departure.Value;
+                departure = arrivalCopy;
+            }
 
-            int bookedRooms = _bookings[hotelId].Count(x => x.RoomType == roomTypeCode && x.Arrival <= date && x.Departure > date);
+            if (!departure.HasValue)
+            {
+                bookedRooms = _bookings[hotelId]
+                                    .Where(x => x.RoomType == roomTypeCode)
+                                    .Count(x => x.Arrival <= arrival && x.Departure > arrival);
+            }
+            else
+            {
+                bookedRooms = _bookings[hotelId]
+                    .Where(x => x.RoomType == roomTypeCode)
+                    .Count(x => (arrival >= x.Arrival && arrival < x.Departure) || (departure > x.Arrival && departure < x.Departure)
+                             || (x.Arrival >= arrival && x.Arrival < departure) || ((x.Departure > arrival && x.Departure < departure)));
+            }
 
             return hotelWholeAvailability - bookedRooms;
         }

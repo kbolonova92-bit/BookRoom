@@ -17,7 +17,7 @@ namespace BookRoom.Tests
         private const string SingleRoomHotelId = "J1";
         private const string SingleRoomHotelRoomType = "Vip";
 
-        private const string СrowdedHotelId = "F1";
+        private const string CrowdedHotelId = "F1";
         private const string CrowdedRoomType = "Some";
 
 
@@ -69,7 +69,7 @@ namespace BookRoom.Tests
         [TestCase(ExistingHotelId, "2024-09-03", ExistingRoomType, 1)]
         [TestCase(ExistingHotelId, "2024-09-05", ExistingRoomType, 2)]
         [TestCase(ExistingHotelId, "2024-09-10", ExistingRoomType, 2)]
-        [TestCase(СrowdedHotelId, "2024-09-02", CrowdedRoomType, -1)]
+        [TestCase(CrowdedHotelId, "2024-09-02", CrowdedRoomType, -1)]
         public async Task CheckAvailability_SingleDate_ReturnsAvailableRoomsAmount(string hotelId, DateTime date, string RoomTypeCode, int roomsAmount)
         {
             var result = _bookingService.CheckAvailability(hotelId, RoomTypeCode, date);
@@ -85,6 +85,9 @@ namespace BookRoom.Tests
         [TestCase(ExistingHotelId, ExistingRoomType, "2024-09-05", "2024-09-10", 2)]
         [TestCase(ExistingHotelId, ExistingRoomType, "2024-09-06", "2024-09-07", 2)]
         [TestCase(ExistingHotelId, ExistingRoomType, "2024-10-01", "2024-11-01", 2)]
+        [TestCase(ExistingHotelId, ExistingRoomType, "2024-10-01", "2024-09-01", 1)]
+        [TestCase(CrowdedHotelId, CrowdedRoomType, "2024-10-01", "2024-09-01", -1)]
+
         public async Task CheckAvailability_ArrivalDepartureDates_ReturnsAvailableRoomsAmount(string hotelId, string RoomTypeCode, DateTime arrival, DateTime departure, int roomsAmount)
         {
             var result = _bookingService.CheckAvailability(hotelId, RoomTypeCode, arrival, departure);
