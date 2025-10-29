@@ -45,7 +45,7 @@ namespace BookRoom.Tests
         [TestCase("", NotExistingRoomType)]
         [TestCase(NotExistingHotelId, " ")]
         [TestCase(" ", NotExistingRoomType)]
-        public async Task CheckAvailability_EmptyData_ThrowsException(string hotelId, string RoomTypeCode)
+        public async Task CheckAvailability_EmptyData_ShouldThrowException(string hotelId, string RoomTypeCode)
         {
             Assert.Throws<ArgumentNullException>(() => { _bookingService.CheckAvailability(hotelId, RoomTypeCode, DateTime.Now); });
         }
@@ -53,7 +53,7 @@ namespace BookRoom.Tests
         [Test]
         [TestCase(NotExistingHotelId, SomeDate, ExistingRoomType)]
         [TestCase(ExistingHotelId, SomeDate, NotExistingRoomType)]
-        public async Task CheckAvailability_DataIsMissing_ThrowsKeyNotFoundException(string hotelId, DateTime date, string RoomTypeCode)
+        public async Task CheckAvailability_DataIsMissing_ShouldThrowKeyNotFoundException(string hotelId, DateTime date, string RoomTypeCode)
         {
             Assert.Throws<KeyNotFoundException>(() => { _bookingService.CheckAvailability(hotelId, RoomTypeCode, date); });
         }
@@ -70,7 +70,7 @@ namespace BookRoom.Tests
         [TestCase(ExistingHotelId, "2024-09-05", ExistingRoomType, 2)]
         [TestCase(ExistingHotelId, "2024-09-10", ExistingRoomType, 2)]
         [TestCase(CrowdedHotelId, "2024-09-02", CrowdedRoomType, -1)]
-        public async Task CheckAvailability_SingleDate_ReturnsAvailableRoomsAmount(string hotelId, DateTime date, string RoomTypeCode, int roomsAmount)
+        public async Task CheckAvailability_SingleDate_ShouldReturnAvailableRoomsAmount(string hotelId, DateTime date, string RoomTypeCode, int roomsAmount)
         {
             var result = _bookingService.CheckAvailability(hotelId, RoomTypeCode, date);
             Assert.That(result, Is.EqualTo(roomsAmount));
@@ -88,7 +88,7 @@ namespace BookRoom.Tests
         [TestCase(ExistingHotelId, ExistingRoomType, "2024-10-01", "2024-09-01", 1)]
         [TestCase(CrowdedHotelId, CrowdedRoomType, "2024-10-01", "2024-09-01", -1)]
 
-        public async Task CheckAvailability_ArrivalDepartureDates_ReturnsAvailableRoomsAmount(string hotelId, string RoomTypeCode, DateTime arrival, DateTime departure, int roomsAmount)
+        public async Task CheckAvailability_ArrivalDepartureDates_ShouldReturnAvailableRoomsAmount(string hotelId, string RoomTypeCode, DateTime arrival, DateTime departure, int roomsAmount)
         {
             var result = _bookingService.CheckAvailability(hotelId, RoomTypeCode, arrival, departure);
             Assert.That(result, Is.EqualTo(roomsAmount));
