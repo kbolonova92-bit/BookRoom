@@ -18,9 +18,15 @@ namespace BookRoom.Tests
         [TestCase("")]
         [TestCase(null)]
         [TestCase("  ")]
-        public void ReadFromJson_EmptyData_ThrowsException(string filePath)
+        public void ReadFromJson_EmptyData_ShouldThrowException(string filePath)
         {
             Assert.Throws<ArgumentNullException>(() => { _bookingReader.ReadFromJson(filePath); });
+        }
+
+        [Test]
+        public void ReadFromJson_File_ShouldReturnSingleObject()
+        {
+            Assert.Fail();
         }
     }
 }
