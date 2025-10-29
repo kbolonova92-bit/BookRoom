@@ -2,7 +2,6 @@
 using BookRoom.Models;
 using NUnit.Framework;
 using System.Text.Json;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace BookRoom.Tests
 {
@@ -91,9 +90,6 @@ namespace BookRoom.Tests
             var result = _bookingService.CheckAvailability(hotelId, RoomTypeCode, arrival, departure);
             Assert.That(result, Is.EqualTo(roomsAmount));
         }
-
-        //Search(H1, 365, SGL) 
-
 
         [Test]
         [TestCase(null, null)]
