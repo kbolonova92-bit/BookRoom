@@ -11,6 +11,10 @@ namespace BookRoom.Logics
     {
         public List<T> ReadFromJson(string path)
         {
+            if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException("Path is invalid.");
+            if (!File.Exists(path)) throw new FileNotFoundException();
+
+
             return null;
         }
     }

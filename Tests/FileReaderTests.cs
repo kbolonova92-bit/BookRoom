@@ -1,4 +1,6 @@
-﻿using NUnit.Framework;
+﻿using BookRoom.Logics;
+using BookRoom.Models;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,15 @@ namespace BookRoom.Tests
     [TestFixture]
     public class FileReaderTests
     {
+        private FileReader<Booking> _bookingReader = new();
+        
         [Test]
+        [TestCase("")]
+        [TestCase(null)]
+        [TestCase("  ")]
         public void ReadFromJson_EmptyData_ThrowsException(string filePath)
         {
-
+            Assert.Throws<ArgumentNullException>(() => { _bookingReader.ReadFromJson(filePath); });
         }
     }
 }
