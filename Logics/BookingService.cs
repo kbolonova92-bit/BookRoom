@@ -52,6 +52,11 @@ namespace BookRoom.Logics
         //Search(H1, 365, SGL) 
         public AvailabilitySlot Search(DateTime today, string hotelId, int daysAhead, string roomTypeCode)
         {
+            if (string.IsNullOrWhiteSpace(hotelId)) throw new ArgumentNullException("Hotel Id is not correct.");
+            if (string.IsNullOrWhiteSpace(roomTypeCode)) throw new ArgumentNullException("Room type is not correct.");
+            if (!_hotels.ContainsKey(hotelId)) throw new KeyNotFoundException($"Hotel with Id {hotelId} is missing.");
+            if (!_hotels[hotelId].RoomTypeExists(roomTypeCode)) throw new KeyNotFoundException($"Room Type with {roomTypeCode} is missing in Hotel {hotelId}.");
+
             return null;
         }
 
