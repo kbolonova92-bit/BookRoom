@@ -50,7 +50,7 @@ namespace BookRoom.Logics
         }
 
         //Search(H1, 365, SGL) 
-        public AvailabilitySlot Search(DateTime today, string hotelId, int daysAhead, string roomTypeCode)
+        public List<AvailabilitySlot> Search(DateTime today, string hotelId, int daysAhead, string roomTypeCode)
         {
             if (string.IsNullOrWhiteSpace(hotelId)) throw new ArgumentNullException("Hotel Id is not correct.");
             if (string.IsNullOrWhiteSpace(roomTypeCode)) throw new ArgumentNullException("Room type is not correct.");
