@@ -93,5 +93,23 @@ namespace BookRoom.Tests
             var result = _bookingService.CheckAvailability(hotelId, RoomTypeCode, arrival, departure);
             Assert.That(result, Is.EqualTo(roomsAmount));
         }
+
+        [Test]
+        public async Task Search_EmptyData_ShouldThrowException()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public async Task Search_MissingData_ShouldThrowException()
+        {
+            Assert.Fail();
+        }
+
+        [Test]
+        public async Task Search_RightData_ShouldReturnAvailabilitySlot()
+        {
+            Assert.Fail();
+        }
     }
 }
