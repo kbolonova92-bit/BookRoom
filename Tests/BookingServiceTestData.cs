@@ -10,14 +10,21 @@
         ""departure"": ""20240903"", 
         ""roomType"": ""DBL"", 
         ""roomRate"": ""Prepaid"" 
-    }, 
+    },
     { 
         ""hotelId"": ""H1"", 
         ""arrival"": ""20240902"", 
         ""departure"": ""20240905"", 
         ""roomType"": ""SGL"", 
         ""roomRate"": ""Standard"" 
-    } , 
+    },
+    { 
+        ""hotelId"": ""H1"", 
+        ""arrival"": ""20241102"", 
+        ""departure"": ""20241105"", 
+        ""roomType"": ""SGL"", 
+        ""roomRate"": ""Standard"" 
+    },
     { 
         ""hotelId"": ""F1"", 
         ""arrival"": ""20240902"", 
