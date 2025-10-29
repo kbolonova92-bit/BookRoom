@@ -49,7 +49,8 @@ namespace BookRoom.Logics
             return hotelWholeAvailability - bookedRooms;
         }
 
-        public string Search()
+        //Search(H1, 365, SGL) 
+        public AvailabilitySlot Search(DateTime today, string hotelId, int daysAhead, string roomTypeCode)
         {
             return null;
         }

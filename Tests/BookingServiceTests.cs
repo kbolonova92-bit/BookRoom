@@ -20,6 +20,8 @@ namespace BookRoom.Tests
         private const string CrowdedHotelId = "F1";
         private const string CrowdedRoomType = "Some";
 
+        private readonly DateTime fakeToday = new DateTime(2024, 09, 01);
+
 
         [SetUp]
         public void Setup()
@@ -58,11 +60,6 @@ namespace BookRoom.Tests
             Assert.Throws<KeyNotFoundException>(() => { _bookingService.CheckAvailability(hotelId, RoomTypeCode, date); });
         }
 
-
-        ///Availability(H1, 20240901, SGL)
-        ///Availability(H1, 20240901-20240903, DBL)
-        ///
-
         [Test]
         [TestCase(SingleRoomHotelId, "2024-01-01", SingleRoomHotelRoomType,1)]
         [TestCase(ExistingHotelId, "2024-09-02", ExistingRoomType, 1)]
@@ -94,10 +91,21 @@ namespace BookRoom.Tests
             Assert.That(result, Is.EqualTo(roomsAmount));
         }
 
+        //Search(H1, 365, SGL) 
+
+
         [Test]
-        public async Task Search_EmptyData_ShouldThrowException()
+        [TestCase(null, null)]
+        [TestCase("", "")]
+        [TestCase(NotExistingHotelId, null)]
+        [TestCase(NotExistingHotelId, "")]
+        [TestCase(null, NotExistingRoomType)]
+        [TestCase("", NotExistingRoomType)]
+        [TestCase(NotExistingHotelId, " ")]
+        [TestCase(" ", NotExistingRoomType)]
+        public async Task Search_EmptyData_ShouldThrowException(string hotelId, string RoomTypeCode)
         {
-            Assert.Fail();
+            Assert.Throws<ArgumentNullException>(() => { _bookingService.Search(fakeToday, hotelId, 3, RoomTypeCode); });
         }
 
         [Test]
