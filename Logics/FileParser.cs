@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace BookRoom.Logics
@@ -22,7 +23,7 @@ namespace BookRoom.Logics
 
             string fileBody = _reader.ReadFile(path);
 
-            return null;
+            return JsonSerializer.Deserialize<List<T>>(fileBody);
         }
     }
 }
