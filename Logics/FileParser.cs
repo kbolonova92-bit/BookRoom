@@ -1,14 +1,8 @@
-﻿using BookRoom.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 
 namespace BookRoom.Logics
 {
-    public class FileParser<T> where T:class
+    public class FileParser
     {
         public IFileReader _reader;
         public FileParser(IFileReader reader) 
@@ -16,12 +10,14 @@ namespace BookRoom.Logics
             _reader = reader;
         }
 
-        public List<T> ReadFromJson(string path)
+        public List<T> ReadFromJson<T>(string path) where T : class
         {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException("Path is invalid.");
-            if (!_reader.FileExists(path)) throw new FileNotFoundException();
 
-            string fileBody = _reader.ReadFile(path);
+            string fullPath = string.Concat(Environment.CurrentDirectory, "/", path);
+            if (!_reader.FileExists(fullPath)) throw new FileNotFoundException();
+
+            string fileBody = _reader.ReadFile(fullPath);
 
             return JsonSerializer.Deserialize<List<T>>(fileBody);
         }

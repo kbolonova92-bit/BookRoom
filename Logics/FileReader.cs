@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookRoom.Logics
 {
-    public class FileReader
+    public class FileReader: IFileReader
     {
         public string ReadFile(string path) => File.ReadAllText(path);
 

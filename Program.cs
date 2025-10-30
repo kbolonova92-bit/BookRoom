@@ -1,6 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using BookRoom.Logics;
 using BookRoom.Models;
+using BookRoom.Tests;
 using System;
 using System.Linq;
 
@@ -36,8 +37,20 @@ for (int i = 0; i < args.Length; i++)
 
 if (hotelsPath is null || bookingsPath is null) ToExit("Not valid params! Add --hotels <filepath> and --bookings <filepath>.");
 
+BookingService bookingService = null;
+
 try
 {
+    FileParser parser = new(new FileReader());
+
+
+    var hotelHash = parser.ReadFromJson<Hotel>(hotelsPath)
+                .ToDictionary(x => x.Id);
+    var bookingHash = parser.ReadFromJson<Booking>(bookingsPath)
+        .GroupBy(x => x.HotelId)
+        .ToDictionary(x => x.Key,
+                      x => x.ToList());
+    bookingService = new(hotelHash, bookingHash);
 
 }
 catch (Exception e)
@@ -46,12 +59,22 @@ catch (Exception e)
 }
 
 Console.WriteLine("Hello, Input your command:");
-var input = Console.ReadLine();
-while (input != string.Empty)
+
+string input;
+do
 {
+    input = Console.ReadLine();
+    if (input.StartsWith("Search("))
+    {
+        var parameters = input.Replace("Search(", string.Empty).Replace(")", string.Empty).Split(",");
+        string hotelId = parameters[0];
+        int daysAhead = int.Parse(parameters[1]);
+        string roomType = parameters[2];
+        bookingService.Search(DateTime.Now, hotelId, daysAhead, roomType);
+    }
 
 }
-
+while (input != string.Empty);
 
 void ToExit(string message)
 {

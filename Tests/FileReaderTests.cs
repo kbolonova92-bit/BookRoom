@@ -8,7 +8,7 @@ namespace BookRoom.Tests
     [TestFixture]
     public class FileReaderTests
     {
-        private FileParser<Booking> _bookingReader;
+        private FileParser _bookingReader;
         private Mock<IFileReader> _fileReaderMock;
 
         [SetUp]
@@ -29,7 +29,7 @@ namespace BookRoom.Tests
         [TestCase("  ")]
         public void ReadFromJson_EmptyData_ShouldThrowException(string filePath)
         {
-            Assert.Throws<ArgumentNullException>(() => { _bookingReader.ReadFromJson(filePath); });
+            Assert.Throws<ArgumentNullException>(() => { _bookingReader.ReadFromJson<Booking>(filePath); });
         }
 
         [Test]
@@ -39,9 +39,9 @@ namespace BookRoom.Tests
                 .Setup(r => r.ReadFile(It.IsAny<string>()))
                 .Returns(BookingServiceTestData.SingleBooking);
             
-            FileParser<Booking> bookingReader = new(_fileReaderMock.Object);
+            FileParser bookingReader = new(_fileReaderMock.Object);
 
-            var result = bookingReader.ReadFromJson("test.json");
+            var result = bookingReader.ReadFromJson<Booking>("test.json");
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count, Is.EqualTo(1));
             Assert.That(result.First().HotelId, Is.EqualTo("H1"));
@@ -58,9 +58,9 @@ namespace BookRoom.Tests
                 .Setup(r => r.ReadFile(It.IsAny<string>()))
                 .Returns(BookingServiceTestData.Bookings);
 
-            FileParser<Booking> bookingReader = new(_fileReaderMock.Object);
+            FileParser bookingReader = new(_fileReaderMock.Object);
 
-            var result = bookingReader.ReadFromJson("test.json");
+            var result = bookingReader.ReadFromJson<Booking>("test.json");
 
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count, Is.EqualTo(5));
