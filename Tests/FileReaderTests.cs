@@ -1,19 +1,22 @@
 ﻿using BookRoom.Logics;
 using BookRoom.Models;
+using Moq;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookRoom.Tests
 {
     [TestFixture]
     public class FileReaderTests
     {
-        private FileReader<Booking> _bookingReader = new();
-        
+        private FileParser<Booking> _bookingReader;
+
+        [SetUp]
+        public void Setup()
+        {
+            var mockReader = new Mock<IFileReader>();
+            _bookingReader = new(mockReader.Object);
+        }
+
         [Test]
         [TestCase("")]
         [TestCase(null)]
@@ -26,6 +29,15 @@ namespace BookRoom.Tests
         [Test]
         public void ReadFromJson_File_ShouldReturnSingleObject()
         {
+            string filePath = "test.json";
+            var mockReader = new Mock<IFileReader>();
+            mockReader
+                .Setup(r => r.ReadFile(filePath))
+                .Returns(BookingServiceTestData.SingleBooking);
+
+            FileParser<Booking> bookingReader = new(mockReader.Object);
+
+            var result = bookingReader.ReadFromJson(filePath);
             Assert.Fail();
         }
     }

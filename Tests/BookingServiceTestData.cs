@@ -41,6 +41,17 @@
     }
         ] ";
 
+        public static string SingleBooking = @"[
+{ 
+        ""hotelId"": ""H1"", 
+        ""arrival"": ""20240901"", 
+        ""departure"": ""20240903"", 
+        ""roomType"": ""DBL"", 
+        ""roomRate"": ""Prepaid"" 
+    }
+]";
+
+
         public static string Hotels = @"[ 
     { 
         ""id"": ""H1"", 

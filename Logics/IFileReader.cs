@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BookRoom.Models
+namespace BookRoom.Logics
 {
-    public class ValidatorResult
+    public interface IFileReader
     {
+        string ReadFile(string path);
+        bool FileExists(string path);
     }
 }
