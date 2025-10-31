@@ -9,6 +9,7 @@ It reads data from two JSON files — hotels.json and bookings.json — and allo
 myapp --hotels hotels.json --bookings bookings.json
 
 🏠 hotels.json Example
+```
 [
   {
     "id": "H1",
@@ -35,8 +36,11 @@ myapp --hotels hotels.json --bookings bookings.json
     ]
   }
 ]
+```
+
 
 📅 bookings.json Example
+```
 [
   {
     "hotelId": "H1",
@@ -53,6 +57,7 @@ myapp --hotels hotels.json --bookings bookings.json
     "roomRate": "Standard"
   }
 ]
+```
 
 💬 Commands
 🔹 Availability Command
