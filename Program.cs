@@ -3,6 +3,8 @@ using BookRoom.Logics;
 using BookRoom.Models;
 using BookRoom.Tests;
 using System;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 
 //myapp --hotels hotels.json --bookings bookings.json
@@ -43,15 +45,13 @@ try
 {
     FileParser parser = new(new FileReader());
 
-
-    var hotelHash = parser.ReadFromJson<Hotel>(hotelsPath)
+    var hotelHash = parser.ReadFromJson<Hotel>(string.Concat(Environment.CurrentDirectory, "/", hotelsPath))
                 .ToDictionary(x => x.Id);
-    var bookingHash = parser.ReadFromJson<Booking>(bookingsPath)
+    var bookingHash = parser.ReadFromJson<Booking>(string.Concat(Environment.CurrentDirectory, "/", bookingsPath))
         .GroupBy(x => x.HotelId)
         .ToDictionary(x => x.Key,
                       x => x.ToList());
     bookingService = new(hotelHash, bookingHash);
-
 }
 catch (Exception e)
 {
@@ -64,15 +64,45 @@ string input;
 do
 {
     input = Console.ReadLine();
+    input = input.Replace(" ", string.Empty);
+    string result = string.Empty;
     if (input.StartsWith("Search("))
     {
         var parameters = input.Replace("Search(", string.Empty).Replace(")", string.Empty).Split(",");
         string hotelId = parameters[0];
         int daysAhead = int.Parse(parameters[1]);
         string roomType = parameters[2];
-        bookingService.Search(DateTime.Now, hotelId, daysAhead, roomType);
+        var avaliableSlots = bookingService.Search(DateTime.Now, hotelId, daysAhead, roomType);
+        result = String.Join(",", avaliableSlots.Select(x => x.ToString()));
     }
+    if (input.StartsWith("Availability("))
+    {
+        var parameters = input.Replace("Availability(", string.Empty).Replace(")", string.Empty).Split(",");
+        string hotelId = parameters[0];
+        string dates = parameters[1];
+        string roomType = parameters[2];
+        DateTime arrival = DateTime.Now;
+        DateTime? departure = null;
 
+        const string dateSeparator = "-";
+        if (!dates.Contains(dateSeparator)) DateTime.TryParseExact(dates, GeneralSettings.DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out arrival);
+        else
+        {
+            var separatedDates = dates.Split(dateSeparator);
+            DateTime.TryParseExact(separatedDates[0], GeneralSettings.DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out arrival);
+            if (DateTime.TryParseExact(separatedDates[1], GeneralSettings.DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var d)) 
+                departure = d;
+        }
+
+            result = bookingService.CheckAvailability(hotelId, roomType, arrival, departure).ToString();
+    }
+    if (!string.IsNullOrEmpty(input))
+    {
+        Console.WriteLine("Unknown command.");
+        continue;
+    }
+    
+    Console.WriteLine(result);
 }
 while (input != string.Empty);
 

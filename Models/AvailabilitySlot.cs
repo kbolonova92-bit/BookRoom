@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BookRoom.Logics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,5 +19,10 @@ namespace BookRoom.Models
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
         public int RoomsAvailable { get; set; }
+
+        public override string ToString()
+        {
+            return $"({StartDate.ToString(GeneralSettings.DateFormat)}-{EndDate.ToString(GeneralSettings.DateFormat)},{RoomsAvailable})";
+        }
     }
 }

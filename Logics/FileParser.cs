@@ -14,10 +14,9 @@ namespace BookRoom.Logics
         {
             if (string.IsNullOrWhiteSpace(path)) throw new ArgumentNullException("Path is invalid.");
 
-            string fullPath = string.Concat(Environment.CurrentDirectory, "/", path);
-            if (!_reader.FileExists(fullPath)) throw new FileNotFoundException();
+            if (!_reader.FileExists(path)) throw new FileNotFoundException();
 
-            string fileBody = _reader.ReadFile(fullPath);
+            string fileBody = _reader.ReadFile(path);
 
             return JsonSerializer.Deserialize<List<T>>(fileBody);
         }
