@@ -1,22 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using BookRoom.Logics;
 using BookRoom.Models;
-using BookRoom.Tests;
-using System;
 using System.Globalization;
-using System.IO;
-using System.Linq;
 
-//myapp --hotels hotels.json --bookings bookings.json
-
-///Availability(H1, 20240901, SGL)
-///Availability(H1, 20240901-20240903, DBL)
-
-//Search(H1, 365, SGL) 
-
-
-
-if (!args.Contains("--hotels")|| !args.Contains("--bookings")) ToExit("Not valid params! Add --hotels <filepath> and --bookings <filepath>.");
+if (!args.Contains("--hotels") || !args.Contains("--bookings")) ToExit("Not valid params! Add --hotels <filepath> and --bookings <filepath>.");
 
 string hotelsPath = null;
 string bookingsPath = null;
