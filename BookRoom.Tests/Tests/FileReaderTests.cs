@@ -3,7 +3,7 @@ using BookRoom.Models;
 using Moq;
 using NUnit.Framework;
 
-namespace BookRoom.Tests
+namespace BookRoom.Tests.Tests
 {
     [TestFixture]
     public class FileReaderTests

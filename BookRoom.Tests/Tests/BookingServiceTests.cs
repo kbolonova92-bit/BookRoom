@@ -3,7 +3,7 @@ using BookRoom.Models;
 using NUnit.Framework;
 using System.Text.Json;
 
-namespace BookRoom.Tests
+namespace BookRoom.Tests.Tests
 {
     [TestFixture]
     public class BookingServiceTests

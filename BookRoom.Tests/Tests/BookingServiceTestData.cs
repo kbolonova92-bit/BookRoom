@@ -1,4 +1,4 @@
-﻿namespace BookRoom.Tests
+﻿namespace BookRoom.Tests.Tests
 {
     public static class BookingServiceTestData
     {

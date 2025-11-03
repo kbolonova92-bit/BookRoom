@@ -86,7 +86,7 @@ do
 }
 while (input != string.Empty);
 
-void ToExit(string message)
+static void ToExit(string message)
 {
     Console.WriteLine(message);
     Console.WriteLine("Press any key to exit...");
