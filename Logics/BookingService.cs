@@ -1,5 +1,4 @@
 ﻿using BookRoom.Models;
-using System.Linq;
 
 namespace BookRoom.Logics
 {
@@ -50,7 +49,6 @@ namespace BookRoom.Logics
             return hotelWholeAvailability - bookedRooms;
         }
 
-        //Search(H1, 365, SGL) 
         public List<AvailabilitySlot> Search(DateTime today, string hotelId, int daysAhead, string roomTypeCode)
         {
             if (string.IsNullOrWhiteSpace(hotelId)) throw new ArgumentNullException("Hotel Id is not correct.");

@@ -50,46 +50,40 @@ Console.WriteLine("Hello, Input your command:");
 string input;
 do
 {
-    input = Console.ReadLine();
+    input = Console.ReadLine() ?? string.Empty;
     input = input.Replace(" ", string.Empty);
     string result = string.Empty;
-    if (input.StartsWith("Search("))
+    if (input.IsSearchCommand())
     {
-        var parameters = input.Replace("Search(", string.Empty).Replace(")", string.Empty).Split(",");
-        string hotelId = parameters[0];
-        int daysAhead = int.Parse(parameters[1]);
-        string roomType = parameters[2];
-        var avaliableSlots = bookingService.Search(DateTime.Now, hotelId, daysAhead, roomType);
-        result = String.Join(",", avaliableSlots.Select(x => x.ToString()));
-    }
-    if (input.StartsWith("Availability("))
-    {
-        var parameters = input.Replace("Availability(", string.Empty).Replace(")", string.Empty).Split(",");
-        string hotelId = parameters[0];
-        string dates = parameters[1];
-        string roomType = parameters[2];
-        DateTime arrival = DateTime.Now;
-        DateTime? departure = null;
-
-        const string dateSeparator = "-";
-        if (!dates.Contains(dateSeparator)) DateTime.TryParseExact(dates, GeneralSettings.DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out arrival);
-        else
+        var parameters = input.ParseSearchCommand();
+        try
         {
-            var separatedDates = dates.Split(dateSeparator);
-            DateTime.TryParseExact(separatedDates[0], GeneralSettings.DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out arrival);
-            if (DateTime.TryParseExact(separatedDates[1], GeneralSettings.DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var d)) 
-                departure = d;
+            var avaliableSlots = bookingService.Search(DateTime.Now, parameters.HotelId, parameters.DaysAhead, parameters.RoomType);
+            result = String.Join(",", avaliableSlots.Select(x => x.ToString()));
         }
-
-            result = bookingService.CheckAvailability(hotelId, roomType, arrival, departure).ToString();
-    }
-    if (!string.IsNullOrEmpty(input))
-    {
-        Console.WriteLine("Unknown command.");
+        catch(Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
         continue;
     }
-    
-    Console.WriteLine(result);
+    if (input.IsAvailabilityCommand())
+    {
+        var parameters = input.ParseAvailabilityCommand();
+        
+        try
+        {
+            result = bookingService.CheckAvailability(parameters.HotelId, parameters.RoomTypeCode, parameters.Arrival, parameters.Departure).ToString();
+            Console.WriteLine(result);
+        }
+        catch(Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+        
+        continue;
+    }
+    if (!string.IsNullOrEmpty(input)) Console.WriteLine("Unknown command.");
 }
 while (input != string.Empty);
 
