@@ -4,9 +4,9 @@ namespace BookRoom.Logics
 {
     public class BookingService
     {
-        private Dictionary<string,Hotel> _hotels;
-        private Dictionary<string, List<Booking>> _bookings;
-        public BookingService(Dictionary<string, Hotel> hotels, Dictionary<string, List<Booking>> bookings) 
+        private readonly Dictionary<string,Hotel> _hotels;
+        private readonly Dictionary<string, List<Booking>> _bookings;
+        public BookingService(Dictionary<string, Hotel> hotels, Dictionary<string, List<Booking>> bookings)
         {
             _hotels = hotels;
             _bookings = bookings;

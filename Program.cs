@@ -1,12 +1,10 @@
-﻿// See https://aka.ms/new-console-template for more information
-using BookRoom.Logics;
+﻿using BookRoom.Logics;
 using BookRoom.Models;
-using System.Globalization;
 
 if (!args.Contains("--hotels") || !args.Contains("--bookings")) ToExit("Not valid params! Add --hotels <filepath> and --bookings <filepath>.");
 
-string hotelsPath = null;
-string bookingsPath = null;
+string hotelsPath = string.Empty;
+string bookingsPath = string.Empty;
 
 for (int i = 0; i < args.Length; i++)
 {
@@ -26,7 +24,7 @@ for (int i = 0; i < args.Length; i++)
 
 if (hotelsPath is null || bookingsPath is null) ToExit("Not valid params! Add --hotels <filepath> and --bookings <filepath>.");
 
-BookingService bookingService = null;
+BookingService bookingService = new(new(), new());
 
 try
 {
@@ -60,6 +58,7 @@ do
         {
             var avaliableSlots = bookingService.Search(DateTime.Now, parameters.HotelId, parameters.DaysAhead, parameters.RoomType);
             result = String.Join(",", avaliableSlots.Select(x => x.ToString()));
+            Console.WriteLine(result);
         }
         catch(Exception e)
         {
