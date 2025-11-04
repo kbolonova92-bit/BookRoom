@@ -1,28 +1,11 @@
 ﻿using BookRoom.Logics;
 using BookRoom.Models;
 
-if (!args.Contains("--hotels") || !args.Contains("--bookings")) ToExit("Not valid params! Add --hotels <filepath> and --bookings <filepath>.");
+if (!ArgsValidator.TryParse(args, out var hotelsPath, out var bookingsPath, out var errorMesasge)) ExitWithMessage(errorMesasge);
 
-string hotelsPath = string.Empty;
-string bookingsPath = string.Empty;
 
-for (int i = 0; i < args.Length; i++)
-{
-    switch (args[i])
-    {
-        case "--hotels":
-            if (i + 1 < args.Length)
-                hotelsPath = args[i + 1];
-            break;
 
-        case "--bookings":
-            if (i + 1 < args.Length)
-                bookingsPath = args[i + 1];
-            break;
-    }
-}
-
-if (hotelsPath is null || bookingsPath is null) ToExit("Not valid params! Add --hotels <filepath> and --bookings <filepath>.");
+if (hotelsPath is null || bookingsPath is null) ExitWithMessage("Not valid params! Add --hotels <filepath> and --bookings <filepath>.");
 
 BookingService bookingService = new(new(), new());
 
@@ -40,7 +23,7 @@ try
 }
 catch (Exception e)
 {
-    ToExit(e.Message);
+    ExitWithMessage(e.Message);
 }
 
 Console.WriteLine("Hello, Input your command:");
@@ -86,10 +69,15 @@ do
 }
 while (input != string.Empty);
 
-static void ToExit(string message)
+static void WriteMessage(string message)
 {
     Console.WriteLine(message);
     Console.WriteLine("Press any key to exit...");
     Console.ReadKey();
+}
+
+static void ExitWithMessage(string message)
+{
+    WriteMessage(message);
     Environment.Exit(1);
 }
