@@ -4,9 +4,22 @@ namespace BookRoom.Logics
 {
     public class BookingService
     {
+        public static BookingService Create(string hotelsFilePath, string bookingsFilePath)
+        {
+            FileParser parser = new(new FileReader());
+
+            var hotelHash = parser.ReadFromJson<Hotel>(string.Concat(Environment.CurrentDirectory, "/", hotelsFilePath))
+                        .ToDictionary(x => x.Id);
+            var bookingHash = parser.ReadFromJson<Booking>(string.Concat(Environment.CurrentDirectory, "/", bookingsFilePath))
+                .GroupBy(x => x.HotelId)
+                .ToDictionary(x => x.Key,
+                              x => x.ToList());
+            return new(hotelHash, bookingHash);
+        }
+
         private readonly Dictionary<string,Hotel> _hotels;
         private readonly Dictionary<string, List<Booking>> _bookings;
-        public BookingService(Dictionary<string, Hotel> hotels, Dictionary<string, List<Booking>> bookings)
+        private BookingService(Dictionary<string, Hotel> hotels, Dictionary<string, List<Booking>> bookings)
         {
             _hotels = hotels;
             _bookings = bookings;
