@@ -16,6 +16,8 @@ namespace BookRoom.Logics
 
         public string Execute()
         {
+            if (this.IsExit()) return string.Empty;
+
             if (this.IsSearchCommand())
             {
                 var parameters = this.ParseSearchCommand();
@@ -29,14 +31,15 @@ namespace BookRoom.Logics
                     return e.Message;
                 }
             }
+
             if (this.IsAvailabilityCommand())
             {
                 var parameters = this.ParseAvailabilityCommand();
 
                 try
                 {
-                    var result = _bookingService.CheckAvailability(parameters.HotelId, parameters.RoomTypeCode, parameters.Arrival, parameters.Departure).ToString();
-                    return result;
+                    var result = _bookingService.CheckAvailability(parameters.HotelId, parameters.RoomTypeCode, parameters.Arrival, parameters.Departure);
+                    return result.ToString();
                 }
                 catch (Exception e)
                 {
