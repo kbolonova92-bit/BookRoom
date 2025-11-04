@@ -3,10 +3,6 @@ using BookRoom.Models;
 
 if (!ArgsValidator.TryParse(args, out var hotelsPath, out var bookingsPath, out var errorMesasge)) ExitWithMessage(errorMesasge);
 
-
-
-if (hotelsPath is null || bookingsPath is null) ExitWithMessage("Not valid params! Add --hotels <filepath> and --bookings <filepath>.");
-
 BookingService bookingService = new(new(), new());
 
 try
