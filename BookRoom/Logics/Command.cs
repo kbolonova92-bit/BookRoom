@@ -57,6 +57,8 @@ namespace BookRoom.Logics
 
         private bool IsSearchCommand() => _input.StartsWith("Search(");
 
+        private bool IsAvailabilityCommand() => _input.StartsWith("Availability(");
+
         private SearchParams ParseSearchCommand()
         {
             var parameters = _input.Replace("Search(", string.Empty).Replace(")", string.Empty).Split(",");
@@ -101,8 +103,6 @@ namespace BookRoom.Logics
             };
 
         }
-
-        private bool IsAvailabilityCommand() => _input.StartsWith("Availability(");
 
         public bool IsExit()
         {
