@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace BookRoom.Logics
 {
-    public static class ArgsValidator
+    public static class ArgsParser
     {
 
         public const string HotelsArg = "--hotels";

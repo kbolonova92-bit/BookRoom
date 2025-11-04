@@ -16,42 +16,48 @@ namespace BookRoom.Logics
 
         public string Execute()
         {
-            if (this.IsExit()) return string.Empty;
-
-            if (this.IsSearchCommand())
+            return _input switch
             {
-                try
-                {
-                    var parameters = this.ParseSearchCommand();
-                    var avaliableSlots = _bookingService.Search(DateTime.Now, parameters.HotelId, parameters.DaysAhead, parameters.RoomType);
-                    return String.Join(",", avaliableSlots.Select(x => x.ToString()));
-                }
-                catch (Exception e)
-                {
-                    return e.Message;
-                }
-            }
-
-            if (this.IsAvailabilityCommand())
-            {
-                try
-                {
-                    var parameters = this.ParseAvailabilityCommand();
-                    var result = _bookingService.CheckAvailability(parameters.HotelId, parameters.RoomTypeCode, parameters.Arrival, parameters.Departure);
-                    return result.ToString();
-                }
-                catch (Exception e)
-                {
-                    return e.Message;
-                }
-            }
-
-            return "Unknown command.";
+                var _ when IsExit() => ExitCommand,
+                var _ when IsSearchCommand() => ExecuteSafely(() => ExecuteSearch()),
+                var _ when IsAvailabilityCommand() => ExecuteSafely(() => ExecuteAvailability()),
+                _ => "Unknown command."
+            };
         }
 
-        public bool IsSearchCommand() => _input.StartsWith("Search(");
+        private string ExecuteSearch()
+        {
+            var parameters = this.ParseSearchCommand();
+            var avaliableSlots = _bookingService.Search(DateTime.Now, parameters.HotelId, parameters.DaysAhead, parameters.RoomType);
+            return String.Join(",", avaliableSlots.Select(x => x.ToString()));
+        }
 
-        public SearchParams ParseSearchCommand()
+        private string ExecuteAvailability()
+        {
+            var parameters = this.ParseAvailabilityCommand();
+            var result = _bookingService.CheckAvailability(parameters.HotelId, parameters.RoomTypeCode, parameters.Arrival, parameters.Departure);
+            return result.ToString();
+        }
+
+        private string ExecuteSafely(Func<string> action)
+        {
+            try
+            {
+                return action();
+            }
+            catch (ArgumentNullException e)
+            {
+                return e.Message;
+            }
+            catch (KeyNotFoundException e)
+            {
+                return e.Message;
+            }
+        }
+
+        private bool IsSearchCommand() => _input.StartsWith("Search(");
+
+        private SearchParams ParseSearchCommand()
         {
             var parameters = _input.Replace("Search(", string.Empty).Replace(")", string.Empty).Split(",");
 
@@ -67,7 +73,7 @@ namespace BookRoom.Logics
             return result;
         }
 
-        public AvailabilityParams ParseAvailabilityCommand()
+        private AvailabilityParams ParseAvailabilityCommand()
         {
             var parameters = _input.Replace("Availability(", string.Empty).Replace(")", string.Empty).Split(",");
             string hotelId = parameters[0];
@@ -96,7 +102,7 @@ namespace BookRoom.Logics
 
         }
 
-        public bool IsAvailabilityCommand() => _input.StartsWith("Availability(");
+        private bool IsAvailabilityCommand() => _input.StartsWith("Availability(");
 
         public bool IsExit()
         {

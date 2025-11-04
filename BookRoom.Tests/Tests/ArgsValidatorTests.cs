@@ -1,11 +1,5 @@
 ﻿using BookRoom.Logics;
-using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BookRoom.Tests.Tests
 {
@@ -15,31 +9,31 @@ namespace BookRoom.Tests.Tests
         private static ArgsTestCase emptyArguments = new()
         {
             Arguments = new string[0],
-            Message = ArgsValidator.NotValidErrorMessage
+            Message = ArgsParser.NotValidErrorMessage
         };
 
         private static ArgsTestCase singleBookingArgument = new()
         {
-            Arguments = new string[] { ArgsValidator.BookingsArg },
-            Message = ArgsValidator.NotValidErrorMessage
+            Arguments = new string[] { ArgsParser.BookingsArg },
+            Message = ArgsParser.NotValidErrorMessage
         };
 
         private static ArgsTestCase singleHotelsArgument = new()
         {
-            Arguments = new string[] { ArgsValidator.HotelsArg },
-            Message = ArgsValidator.NotValidErrorMessage
+            Arguments = new string[] { ArgsParser.HotelsArg },
+            Message = ArgsParser.NotValidErrorMessage
         };
 
         private static ArgsTestCase notEnoughArguments = new()
         {
-            Arguments = new string[] { ArgsValidator.BookingsArg, ArgsValidator.HotelsArg, "somestr" },
-            Message = ArgsValidator.NotValidErrorMessage
+            Arguments = new string[] { ArgsParser.BookingsArg, ArgsParser.HotelsArg, "somestr" },
+            Message = ArgsParser.NotValidErrorMessage
         };
 
         private static ArgsTestCase invalidArgumentOrder = new()
         {
-            Arguments = new string[] { ArgsValidator.BookingsArg, ArgsValidator.HotelsArg, "hoo.json", "somestr.json" },
-            Message = ArgsValidator.NotValidFilesExtensionMessage
+            Arguments = new string[] { ArgsParser.BookingsArg, ArgsParser.HotelsArg, "hoo.json", "somestr.json" },
+            Message = ArgsParser.NotValidFilesExtensionMessage
         };
 
 
@@ -56,7 +50,7 @@ namespace BookRoom.Tests.Tests
         [TestCaseSource(nameof(NotEnoughtArgs))]
         public void TryParse_WithNotEnoughtArgs_ShouldReturnFalse(ArgsTestCase testCase)
         {
-            bool isSuccess = ArgsValidator.TryParse(testCase.Arguments, out var hotelFilePath, out var bookingFilePath, out var errorMessage);
+            bool isSuccess = ArgsParser.TryParse(testCase.Arguments, out var hotelFilePath, out var bookingFilePath, out var errorMessage);
             Assert.That(isSuccess, Is.False);
             Assert.That(errorMessage, Is.EqualTo(testCase.Message));
         }
@@ -67,23 +61,23 @@ namespace BookRoom.Tests.Tests
         {
             new ArgsTestCase()
             {
-                Arguments = new string[] { ArgsValidator.BookingsArg, "hoo.exe", ArgsValidator.HotelsArg, "somestr.sql" },
-                Message = ArgsValidator.NotValidFilesExtensionMessage
+                Arguments = new string[] { ArgsParser.BookingsArg, "hoo.exe", ArgsParser.HotelsArg, "somestr.sql" },
+                Message = ArgsParser.NotValidFilesExtensionMessage
             },
             new ArgsTestCase()
             {
-                Arguments = new string[] { ArgsValidator.BookingsArg, "hoo.json", ArgsValidator.HotelsArg, "somestr.sql" },
-                Message = ArgsValidator.NotValidFilesExtensionMessage
+                Arguments = new string[] { ArgsParser.BookingsArg, "hoo.json", ArgsParser.HotelsArg, "somestr.sql" },
+                Message = ArgsParser.NotValidFilesExtensionMessage
             },
             new ArgsTestCase()
             {
-                Arguments = new string[] { ArgsValidator.BookingsArg, "hoo.sql", ArgsValidator.HotelsArg, "somestr.json" },
-                Message = ArgsValidator.NotValidFilesExtensionMessage
+                Arguments = new string[] { ArgsParser.BookingsArg, "hoo.sql", ArgsParser.HotelsArg, "somestr.json" },
+                Message = ArgsParser.NotValidFilesExtensionMessage
             },
             new ArgsTestCase()
             {
-                Arguments = new string[] { ArgsValidator.HotelsArg, "somestr.json", ArgsValidator.BookingsArg, "hoo.sql" },
-                Message = ArgsValidator.NotValidFilesExtensionMessage
+                Arguments = new string[] { ArgsParser.HotelsArg, "somestr.json", ArgsParser.BookingsArg, "hoo.sql" },
+                Message = ArgsParser.NotValidFilesExtensionMessage
             }
         };
 
@@ -91,22 +85,22 @@ namespace BookRoom.Tests.Tests
         [TestCaseSource(nameof(InvalidExtensionFiles))]
         public void TryParse_WithInvalidExtensionFiles_ShouldReturnFalse(ArgsTestCase testCase)
         {
-            bool isSuccess = ArgsValidator.TryParse(testCase.Arguments, out var hotelFilePath, out var bookingFilePath, out var errorMessage);
+            bool isSuccess = ArgsParser.TryParse(testCase.Arguments, out var hotelFilePath, out var bookingFilePath, out var errorMessage);
             Assert.That(isSuccess, Is.False);
             Assert.That(errorMessage, Is.EqualTo(testCase.Message));
         }
 
         private static string[][] ValidParameters = new[]
         {
-            new string[] { ArgsValidator.BookingsArg, "hoo.json", ArgsValidator.HotelsArg, "somestr.json" },
-            new string[] { ArgsValidator.HotelsArg, "somestr.json", ArgsValidator.BookingsArg, "hoo.json" }
+            new string[] { ArgsParser.BookingsArg, "hoo.json", ArgsParser.HotelsArg, "somestr.json" },
+            new string[] { ArgsParser.HotelsArg, "somestr.json", ArgsParser.BookingsArg, "hoo.json" }
         };
 
         [Test]
         [TestCaseSource(nameof(ValidParameters))]
         public void TryParse_WithValidParameters_ShouldReturnTrue(string[] arguments)
         {
-            bool isSuccess = ArgsValidator.TryParse(arguments, out var hotelFilePath, out var bookingFilePath, out var errorMessage);
+            bool isSuccess = ArgsParser.TryParse(arguments, out var hotelFilePath, out var bookingFilePath, out var errorMessage);
             Assert.That(isSuccess, Is.True);
             Assert.That(errorMessage, Is.Empty);
         }
