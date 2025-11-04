@@ -20,9 +20,9 @@ namespace BookRoom.Logics
 
             if (this.IsSearchCommand())
             {
-                var parameters = this.ParseSearchCommand();
                 try
                 {
+                    var parameters = this.ParseSearchCommand();
                     var avaliableSlots = _bookingService.Search(DateTime.Now, parameters.HotelId, parameters.DaysAhead, parameters.RoomType);
                     return String.Join(",", avaliableSlots.Select(x => x.ToString()));
                 }
@@ -34,10 +34,9 @@ namespace BookRoom.Logics
 
             if (this.IsAvailabilityCommand())
             {
-                var parameters = this.ParseAvailabilityCommand();
-
                 try
                 {
+                    var parameters = this.ParseAvailabilityCommand();
                     var result = _bookingService.CheckAvailability(parameters.HotelId, parameters.RoomTypeCode, parameters.Arrival, parameters.Departure);
                     return result.ToString();
                 }
