@@ -1,4 +1,5 @@
 ﻿using BookRoom.Logics;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -93,6 +94,21 @@ namespace BookRoom.Tests.Tests
             bool isSuccess = ArgsValidator.TryParse(testCase.Arguments, out var hotelFilePath, out var bookingFilePath, out var errorMessage);
             Assert.That(isSuccess, Is.False);
             Assert.That(errorMessage, Is.EqualTo(testCase.Message));
+        }
+
+        private static string[][] ValidParameters = new[]
+        {
+            new string[] { ArgsValidator.BookingsArg, "hoo.json", ArgsValidator.HotelsArg, "somestr.json" },
+            new string[] { ArgsValidator.HotelsArg, "somestr.json", ArgsValidator.BookingsArg, "hoo.json" }
+        };
+
+        [Test]
+        [TestCaseSource(nameof(ValidParameters))]
+        public void TryParse_WithValidParameters_ShouldReturnTrue(string[] arguments)
+        {
+            bool isSuccess = ArgsValidator.TryParse(arguments, out var hotelFilePath, out var bookingFilePath, out var errorMessage);
+            Assert.That(isSuccess, Is.True);
+            Assert.That(errorMessage, Is.Empty);
         }
     }
 }
