@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace BookRoom.Logics;
 
-namespace BookRoom.Logics
+public static class GeneralSettings
 {
-    public static class GeneralSettings
-    {
-        public const string DateFormat = "yyyyMMdd";
-    }
+    public const string DateFormat = "yyyyMMdd";
 }

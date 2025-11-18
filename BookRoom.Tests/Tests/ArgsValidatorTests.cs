@@ -1,5 +1,4 @@
 ﻿using BookRoom.Logics;
-using NUnit.Framework;
 
 namespace BookRoom.Tests.Tests
 {

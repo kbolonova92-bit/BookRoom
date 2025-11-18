@@ -1,8 +1,8 @@
-﻿namespace BookRoom.Tests.Tests
+﻿namespace BookRoom.Tests.Tests;
+
+public static class BookingServiceTestData
 {
-    public static class BookingServiceTestData
-    {
-        public static string Bookings = @"[ 
+    public static string Bookings = @"[ 
 
     { 
         ""hotelId"": ""H1"", 
@@ -41,7 +41,7 @@
     }
         ] ";
 
-        public static string SingleBooking = @"[
+    public static string SingleBooking = @"[
 { 
         ""hotelId"": ""H1"", 
         ""arrival"": ""20240901"", 
@@ -52,7 +52,7 @@
 ]";
 
 
-        public static string Hotels = @"[ 
+    public static string Hotels = @"[ 
     { 
         ""id"": ""H1"", 
         ""name"": ""Hotel California"", 
@@ -127,5 +127,4 @@
     }
     ]";
 
-    }
 }

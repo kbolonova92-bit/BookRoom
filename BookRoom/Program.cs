@@ -16,7 +16,7 @@ catch (Exception e)
 
 Console.WriteLine("Hello, Input your command:");
 
-Command command = null;
+Command? command = null;
 do
 {
     try
