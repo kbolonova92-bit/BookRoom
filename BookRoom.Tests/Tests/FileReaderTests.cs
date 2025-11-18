@@ -1,6 +1,4 @@
-﻿using BookRoom.Logics;
-using BookRoom.Models;
-using Moq;
+﻿using Moq;
 
 namespace BookRoom.Tests.Tests;
 
